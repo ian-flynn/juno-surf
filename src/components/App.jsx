@@ -1,11 +1,12 @@
 import React from "react";
 import NavBar from "./NavBar.jsx";
+import SurfData from "./SurfData.jsx";
 
 const App = () => {
   return (
     <div>
-      <h3>Hell World</h3>
       <NavBar />
+      <SurfData />
     </div>
   );
 };

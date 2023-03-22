@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 
 module.exports = {
+  mode: process.env.NODE_ENV,
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
@@ -32,4 +33,13 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
+  devServer: {
+    static: {
+      publicPath: '/build',
+      directory: path.resolve(__dirname, 'build')
+    },
+    proxy: {
+      '/api': 'http://localhost:3000'
+    }
+  }
 }

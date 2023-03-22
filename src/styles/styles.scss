@@ -1,3 +1,22 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body {
-    background-color: red;
+    // background-color: red;
+}
+#navbar {
+    background-color: lightblue;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+#surf-data {
+    margin-top: 100px;
+    background-color: pink;
 }
