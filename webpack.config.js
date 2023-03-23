@@ -1,11 +1,11 @@
 const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin')
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   resolve: {
     modules: [path.join(__dirname, 'src'), 'node_modules'],
@@ -24,7 +24,14 @@ module.exports = {
       },
       {
         test: /\.s?css/,
-        use: [ 'style-loader', 'css-loader', 'sass-loader' ],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(jpg|png|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[hash].[ext]',
+        },
       },
     ],
   },
@@ -36,10 +43,10 @@ module.exports = {
   devServer: {
     static: {
       publicPath: '/build',
-      directory: path.resolve(__dirname, 'build')
+      directory: path.resolve(__dirname, 'build'),
     },
     proxy: {
-      '/api': 'http://localhost:3000'
-    }
-  }
-}
+      '/api': 'http://localhost:3000',
+    },
+  },
+};

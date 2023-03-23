@@ -1,6 +1,6 @@
-import React from "react";
-import NavBar from "./NavBar.jsx";
-import SurfData from "./SurfData.jsx";
+import React from 'react';
+import NavBar from './NavBar.jsx';
+import SurfData from './SurfData.jsx';
 
 const App = () => {
   return (

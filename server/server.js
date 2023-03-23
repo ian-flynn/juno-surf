@@ -1,20 +1,38 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const cors = require('cors');
+app.use(cors());
 
 const apiURL = 'https://www.ndbc.noaa.gov/data/realtime2/41114.txt';
-const buoyData = []
-fetch(apiURL)
-  .then( res => res.text() )
-  .then(data => {
-    buoyData.push(...data.split('\n')[3].split(' ').filter(el => el !== ''))
-    console.log('BUOYDATA', buoyData) 
-  })
-//WVHT is wave height
-//DPD out of 20 seconds, 10 medium swell, larger better swell, lower is choppy wind waves
-//MWT degrees from north
-app.get('/api/buoy', (req, res) => {
-  return res.status(200).send(buoyData);
+const pierURL = 'https://www.ndbc.noaa.gov/data/realtime2/LKWF1.txt';
+
+const getBuoyData = async (req, res, next) => {
+  try {
+    let buoyStuff = await fetch(apiURL);
+    let buoyJson = await (await buoyStuff.text()).split('\n');
+    res.locals.ocean = buoyJson;
+    return next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+const getPierData = async (req, res, next) => {
+  try {
+    let pierStuff = await fetch(pierURL);
+    let pierJson = await (await pierStuff.text()).split('\n');
+    res.locals.pier = pierJson;
+    return next();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+app.get('/api/buoy', getBuoyData, getPierData, (req, res) => {
+  // console.log('LOCALS: ', res.locals)
+  return res
+    .status(200)
+    .json({ ocean: res.locals.ocean, pier: res.locals.pier });
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -25,7 +43,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-
 app.listen(3000, () => {
-  console.log('Listening on port 3000...')
-}); 
+  console.log('Listening on port 3000...');
+});

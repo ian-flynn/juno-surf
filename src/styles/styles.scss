@@ -1,22 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+//font-family: 'Rock Salt', cursive;
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
-    // background-color: red;
+  background-color: seashell;
+  font-family: 'Rock Salt', cursive;
 }
+img {
+  max-width: 100%;
+}
+
 #navbar {
-    background-color: lightblue;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+  background-color: lightblue;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  border-bottom-right-radius: 30px;
+  #logo {
+    margin: 6px;
+    width: 40vw;
+  }
+}
+
+#surf-data {
+  margin-top: 100px;
+
+  #wave-data {
+    margin: 10px;
+    border-radius: 10px;
+    background-color: pink;
+    padding: 15px;
+
+    .cardinal-arrow {
+      width: 50px;
+    }
+  }
+  #wind-data {
+    background-color: aqua;
+    margin: 10px;
+    border-radius: 10px;
+  }
+  .row {
     display: flex;
     flex-direction: row;
-
-}
-#surf-data {
-    margin-top: 100px;
-    background-color: pink;
+  }
+  .blob {
+    position: relative;
+    text-align: center;
+    width: 100px;
+    // color: white;
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      // background-color: aquamarine;
+    }
+  }
 }
