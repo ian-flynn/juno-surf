@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 import arrow from '../images/arrow.png';
 import button1 from '../images/button1.png';
 import button2 from '../images/button2.png';
+import compass from '../images/compass.png';
+import DataBlob from './DataBlob.jsx';
 
 const SurfData = () => {
   // ++ OCEAN DATA ++
@@ -63,82 +65,73 @@ const SurfData = () => {
 
   return (
     <div id='surf-data'>
+      {/* WAVE DATA SECTION */}
       <div id='wave-data'>
         <div className='row'>
-          <div className='stat'>
-            <span className='stat-label'>Wave Height</span>
-            <div className='blob' onClick={() => console.log('clicked')}>
-              <img src={button1} />
-              <div className='centered'>{Math.round(wvht * 3.28084)}ft</div>
-            </div>
-          </div>
-          <div className='stat'>
-            <span className='stat-label'>Swell</span>
-            <div className='blob'>
-              <img src={button2} />
-              <div className='centered'>{Math.round(dpd)}s</div>
-            </div>
-          </div>
-          <div className='stat'>
-            <span className='stat-label'>Wave Period</span>
-            <div className='blob'>
-              <img src={button1} />
-              <div className='centered'>{Math.round(apd)}s</div>
-            </div>
-          </div>
+          <DataBlob
+            label={'Wave Height'}
+            stat={Math.round(wvht * 3.28084) + 'ft'}
+            button={button1}
+          />
+          <DataBlob
+            label={'Swell'}
+            stat={Math.round(dpd) + 's'}
+            button={button2}
+          />
+          <DataBlob
+            label={'Wave Period'}
+            stat={Math.round(apd) + 's'}
+            button={button1}
+          />
         </div>
-
-        <button className='stat-box'>
-          Wave Origin: {Math.round(mwd)} degrees from north
-        </button>
-        <button className='stat-box'>
-          Water Temp: {Math.round((wtmp * 9) / 5 + 32)} &deg;F
-        </button>
-        <button className='cardinal-arrow'>
-          <img src={arrow} style={{ transform: `rotate( ${-90 + mwd}deg )` }} />
-        </button>
-      </div>
-      <div id='wind-data'>
         <div className='row'>
-          <div className='stat'>
-            <span className='stat-label'>Wind Speed</span>
-            <div className='blob'>
-              <img src={button2} />
-              <div className='centered'>{Math.round(wspd * 2.237)}</div>
-            </div>
-          </div>
-          <div className='stat'>
-            <span className='stat-label'>Gust Speed</span>
-            <div className='blob'>
-              <img src={button1} />
-              <div className='centered'>{Math.round(gst * 2.237)}</div>
-            </div>
-          </div>
-          <div className='stat'>
-            <span className='stat-label'>Air Temp</span>
-            <div className='blob'>
-              <img src={button2} />
-              <div className='centered'>
-                {Math.round((atmp * 9) / 5 + 32)}&deg;F
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='stat'>
-          <span className='stat-label'></span>
-          <div className='blob'>
-            <img src={button2} />
-            <div className='centered'>
+          <DataBlob
+            label={'Water Temp'}
+            stat={Math.round((wtmp * 9) / 5 + 32) + '\u00b0'}
+            button={button1}
+          />
+          <DataBlob
+            label={''}
+            stat={
               <img
                 src={arrow}
-                style={{ transform: `rotate( ${-90 + wdir}deg )` }}
+                style={{ transform: `rotate( ${-90 + mwd}deg )` }}
               />
-            </div>
-          </div>
+            }
+            button={compass}
+          />
         </div>
-        <button className='stat-box'>
-          Wind Origin: {wdir} degrees from north
-        </button>
+      </div>
+
+      {/* WIND DATA SECTION  */}
+      <div id='wind-data'>
+        <div className='row'>
+          <DataBlob
+            label={'Wind Speed'}
+            stat={Math.round(wspd * 2.237)}
+            button={button2}
+          />
+          <DataBlob
+            label={'Gust Speed'}
+            stat={Math.round(gst * 2.237)}
+            button={button1}
+          />
+          <DataBlob
+            label={'Air Temp'}
+            stat={Math.round((atmp * 9) / 5 + 32) + '\u00b0'}
+            button={button2}
+          />
+        </div>
+        <DataBlob
+          label={''}
+          stat={
+            <img
+              src={arrow}
+              style={{ transform: `rotate( ${-90 + wdir}deg )` }}
+            />
+          }
+          button={compass}
+        />
       </div>
       <h5>Last Update: {date}</h5>
     </div>

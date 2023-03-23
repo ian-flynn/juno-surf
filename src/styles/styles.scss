@@ -14,11 +14,12 @@ img {
 }
 
 #navbar {
-  background-color: lightblue;
+  // z-index: 100;
+  background-color: #b9f1fe;
   position: fixed;
   top: 0;
   left: 0;
-  width: 80%;
+  width: 80vw;
   display: flex;
   flex-direction: row;
   border-bottom-right-radius: 30px;
@@ -32,9 +33,9 @@ img {
   margin-top: 100px;
 
   #wave-data {
+    background-color: #47daff;
     margin: 10px;
     border-radius: 10px;
-    background-color: pink;
     padding: 15px;
 
     .cardinal-arrow {
@@ -45,6 +46,7 @@ img {
     background-color: aqua;
     margin: 10px;
     border-radius: 10px;
+    padding: 15px;
   }
   .row {
     display: flex;
