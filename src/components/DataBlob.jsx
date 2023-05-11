@@ -6,7 +6,10 @@ const DataBlob = (props) => {
       <span className='stat-label'>{props.label}</span>
       <div
         className='blob'
-        onClick={() => console.log(`clicked ${props.label}`)}
+        onClick={() => {
+          props.handleClick(props.label);
+          console.log(`clicked ${props.label}`);
+        }}
       >
         <img src={props.button} />
         <div className='centered'>{props.stat}</div>
