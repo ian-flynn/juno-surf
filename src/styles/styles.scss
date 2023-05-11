@@ -8,13 +8,14 @@
 body {
   background-color: seashell;
   font-family: 'Rock Salt', cursive;
+  padding: 10px;
 }
 img {
   max-width: 100%;
 }
 
 #navbar {
-  // z-index: 100;
+  z-index: 100;
   background-color: #b9f1fe;
   position: fixed;
   top: 0;
@@ -30,17 +31,44 @@ img {
 }
 
 #surf-data {
-  margin-top: 100px;
-
+  margin-top: 80px;
+  .info-box {
+    background-color: transparentize($color: pink, $amount: 0.5);
+    z-index: 99;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding: 25px;
+    text-align: center;
+    div {
+      background-color: salmon;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    // background-color: red;
+    margin: 2px;
+    // max-width: 110px;
+    max-width: 30%;
+    span {
+      font-size: 16px;
+    }
+  }
   #wave-data {
     background-color: #47daff;
     margin: 10px;
     border-radius: 10px;
     padding: 15px;
-
-    .cardinal-arrow {
-      width: 50px;
-    }
   }
   #wind-data {
     background-color: aqua;
@@ -51,6 +79,7 @@ img {
   .row {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
   }
   .blob {
     position: relative;
