@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./src/images/juno-surf-github-logo.png" alt="Juno Surf">
+  <img src="./src/images/juno-surf-github-logo.png" alt="Juno Surf" width="200px">
 </p>
 
 ---
