@@ -4,9 +4,11 @@ import SurfData from './SurfData.jsx';
 
 const App = () => {
   return (
-    <div>
-      <NavBar />
-      <SurfData />
+    <div id='wrapper'>
+      <div id='app'>
+        <NavBar />
+        <SurfData />
+      </div>
     </div>
   );
 };

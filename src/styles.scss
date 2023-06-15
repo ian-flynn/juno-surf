@@ -13,20 +13,29 @@ body {
 img {
   max-width: 100%;
 }
-
+#wrapper {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#app {
+  max-width: 450px;
+}
 #navbar {
   z-index: 100;
   background-color: #b9f1fe;
   position: fixed;
   top: 0;
   left: 0;
-  width: 80vw;
+  width: 80%;
+  height: 75px;
+  width: auto;
   display: flex;
   flex-direction: row;
   border-bottom-right-radius: 30px;
   #logo {
-    margin: 6px;
-    width: 40vw;
+    margin: 0.3rem 3rem 0.3rem 0.5rem;
   }
 }
 
