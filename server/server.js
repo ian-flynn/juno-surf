@@ -2,7 +2,20 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
 app.use(cors());
+
+//mongodb connection
+const mongoConnect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('Success connecting to mongodb');
+  } catch (error) {
+    console.log('error connecting to mongodb');
+  }
+};
+mongoConnect();
 
 const apiURL = 'https://www.ndbc.noaa.gov/data/realtime2/41114.txt';
 const pierURL = 'https://www.ndbc.noaa.gov/data/realtime2/LKWF1.txt';
