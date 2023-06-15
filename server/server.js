@@ -3,19 +3,26 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { urlencoded } = require('body-parser');
 require('dotenv').config();
-app.use(cors());
 
 //mongodb connection
+const dbOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 const mongoConnect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, dbOptions);
     console.log('Success connecting to mongodb');
   } catch (error) {
     console.log('error connecting to mongodb');
   }
 };
 mongoConnect();
+
+app.use(cors());
+app.use(urlencoded({ extended: true }));
 
 const apiURL = 'https://www.ndbc.noaa.gov/data/realtime2/41114.txt';
 const pierURL = 'https://www.ndbc.noaa.gov/data/realtime2/LKWF1.txt';
