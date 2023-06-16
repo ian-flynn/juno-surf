@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { urlencoded } = require('body-parser');
 require('dotenv').config();
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 //mongodb connection
 const dbOptions = {
@@ -21,6 +22,23 @@ const mongoConnect = async () => {
   }
 };
 mongoConnect();
+const connection = mongoose.connection;
+
+// mongo session store
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_SESSION_URL,
+      dbName: 'juno-surf',
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 5,
+    },
+  })
+);
 
 app.use(cors());
 app.use(urlencoded({ extended: true }));
@@ -60,7 +78,13 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/build', express.static(path.join(__dirname, '../build')));
   // serve index.html on the route '/'
   app.get('/', (req, res) => {
-    return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
+    return res.status(200).sendFile(path.join(__dirname, './index.html'));
+  });
+} else {
+  // app.use('/src', express.static(path.join(__dirname, '../src')));
+  app.get('/', (req, res) => {
+    // return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
+    res.send('<h1>Hey there</h1>');
   });
 }
 
