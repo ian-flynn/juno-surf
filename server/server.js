@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { urlencoded } = require('body-parser');
 require('dotenv').config();
+const session = require('express-session');
 
 //mongodb connection
 const dbOptions = {
