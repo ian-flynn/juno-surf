@@ -35,7 +35,7 @@ app.use(
       dbName: 'juno-surf',
     }),
     cookie: {
-      maxAge: 1000 * 60 * 5,
+      maxAge: 1000 * 60 * 60 * 24,
     },
   })
 );
