@@ -22,23 +22,38 @@ const mongoConnect = async () => {
   }
 };
 mongoConnect();
-const connection = mongoose.connection;
-console.log(connection);
+
+// const connection = mongoose.connection;
+// console.log(connection);
+
 // mongo session store
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      dbName: 'juno-surf',
-    }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 second, 1 min, 1 hour, 1 day
     },
+    store: MongoStore.create({
+      client: mongoose.connection.getClient(),
+    }),
   })
 );
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({
+//       mongoUrl: process.env.MONGO_URI,
+//       dbName: 'juno-surf',
+//     }),
+//     cookie: {
+//       maxAge: 1000 * 60 * 60 * 24, // 1 second, 1 min, 1 hour, 1 day
+//     },
+//   })
+// );
 
 app.use(cors());
 app.use(urlencoded({ extended: true }));
