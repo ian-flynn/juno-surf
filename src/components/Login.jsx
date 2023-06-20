@@ -5,13 +5,14 @@ const googleOAuthBox = {
   top: '100px',
 };
 const Login = ({ menuOpen }) => {
+  const googleLogin = () => {};
   return (
     <div
       style={{
         display: menuOpen ? 'block' : 'none',
       }}
     >
-      google login here
+      <button>google login</button>
     </div>
   );
 };
