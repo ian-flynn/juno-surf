@@ -2,7 +2,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  username: { type: String, required: true },
+  id: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  profilePic: { type: String, required: true },
+
   beachCode: { type: String, default: 'temp' },
 });
 
