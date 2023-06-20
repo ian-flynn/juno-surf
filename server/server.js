@@ -1,8 +1,104 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const { urlencoded } = require('body-parser');
+require('dotenv').config();
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('./userSchema.js');
+//do I need this?
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+//mongodb connection
+const dbOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+const mongoConnect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, dbOptions);
+    console.log('Success connecting to mongodb');
+  } catch (error) {
+    console.log('error connecting to mongodb');
+  }
+};
+mongoConnect();
+
+// const connection = mongoose.connection;
+// console.log(connection);
+
+// mongo session store
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 second, 1 min, 1 hour, 1 day
+    },
+    store: MongoStore.create({
+      client: mongoose.connection.getClient(),
+    }),
+  })
+);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({
+//       mongoUrl: process.env.MONGO_URI,
+//       dbName: 'juno-surf',
+//     }),
+//     cookie: {
+//       maxAge: 1000 * 60 * 60 * 24, // 1 second, 1 min, 1 hour, 1 day
+//     },
+//   })
+// );
+
 app.use(cors());
+app.use(urlencoded({ extended: true }));
+
+//passport
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log('user profile is: ', profile);
+    }
+  )
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+    successRedirect: '/profile',
+    failureFlash: true,
+    successFlash: 'Successfully logged in!',
+  })
+);
 
 const apiURL = 'https://www.ndbc.noaa.gov/data/realtime2/41114.txt';
 const pierURL = 'https://www.ndbc.noaa.gov/data/realtime2/LKWF1.txt';
@@ -39,7 +135,13 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/build', express.static(path.join(__dirname, '../build')));
   // serve index.html on the route '/'
   app.get('/', (req, res) => {
-    return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
+    return res.status(200).sendFile(path.join(__dirname, './index.html'));
+  });
+} else {
+  // app.use('/src', express.static(path.join(__dirname, '../src')));
+  app.get('/', (req, res) => {
+    // return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
+    res.send('<h1>Hey there</h1>');
   });
 }
 
