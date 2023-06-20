@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { urlencoded } = require('body-parser');
@@ -10,35 +11,11 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./userSchema.js');
-
-//passport
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: process.env.REDIRECT_URI,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      console.log('user profile is: ', profile);
-    }
-  )
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  })
-);
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/',
-    successRedirect: '/profile',
-    failureFlash: true,
-    successFlash: 'Successfully logged in!',
+//do I need this?
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
   })
 );
 
@@ -91,6 +68,37 @@ app.use(
 
 app.use(cors());
 app.use(urlencoded({ extended: true }));
+
+//passport
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log('user profile is: ', profile);
+    }
+  )
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+    successRedirect: '/profile',
+    failureFlash: true,
+    successFlash: 'Successfully logged in!',
+  })
+);
 
 const apiURL = 'https://www.ndbc.noaa.gov/data/realtime2/41114.txt';
 const pierURL = 'https://www.ndbc.noaa.gov/data/realtime2/LKWF1.txt';
