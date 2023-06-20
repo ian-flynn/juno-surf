@@ -9,15 +9,37 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('./userSchema.js');
 
 //passport
 passport.use(
-  new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: process.env.REDIRECT_URI,
-  }),
-  function verify(accessToken, refreshToken, profile, cb) {}
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log('user profile is: ', profile);
+    }
+  )
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+    successRedirect: '/profile',
+    failureFlash: true,
+    successFlash: 'Successfully logged in!',
+  })
 );
 
 //mongodb connection
