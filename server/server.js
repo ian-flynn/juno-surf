@@ -79,6 +79,24 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log('user profile is: ', profile);
+      const id = profile.id;
+      const firstName = profile.name.givenName;
+      const lastName = profile.name.familyName;
+      const email = profile.emails[0].value;
+      const profilePic = profile.photos[0].value;
+
+      let currentUser = await User.findOne({ email });
+      if (!currentUser) {
+        const user = new User({
+          id,
+          email,
+          firstName,
+          lastName,
+          profilePic,
+        });
+        currentUser = user.save();
+      }
+      return done(null, currentUser);
     }
   )
 );
@@ -94,7 +112,7 @@ app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/',
-    successRedirect: '/profile',
+    successRedirect: '/',
     failureFlash: true,
     successFlash: 'Successfully logged in!',
   })
