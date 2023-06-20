@@ -7,6 +7,18 @@ const { urlencoded } = require('body-parser');
 require('dotenv').config();
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+//passport
+passport.use(
+  new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.REDIRECT_URI,
+  }),
+  function verify(accessToken, refreshToken, profile, cb) {}
+);
 
 //mongodb connection
 const dbOptions = {
