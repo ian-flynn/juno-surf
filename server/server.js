@@ -11,6 +11,8 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./userSchema.js');
+const cookieParser = require('cookie-parser');
+
 //do I need this?
 app.use(bodyParser.json());
 app.use(
@@ -18,21 +20,21 @@ app.use(
     extended: true,
   })
 );
-
+app.use(cookieParser());
 //mongodb connection
 const dbOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
-const mongoConnect = async () => {
+(async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, dbOptions);
     console.log('Success connecting to mongodb');
   } catch (error) {
     console.log('error connecting to mongodb');
   }
-};
-mongoConnect();
+})();
+// mongoConnect();
 
 // const connection = mongoose.connection;
 // console.log(connection);
@@ -51,20 +53,6 @@ app.use(
     }),
   })
 );
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     store: MongoStore.create({
-//       mongoUrl: process.env.MONGO_URI,
-//       dbName: 'juno-surf',
-//     }),
-//     cookie: {
-//       maxAge: 1000 * 60 * 60 * 24, // 1 second, 1 min, 1 hour, 1 day
-//     },
-//   })
-// );
 
 app.use(cors());
 app.use(urlencoded({ extended: true }));
