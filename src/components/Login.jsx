@@ -12,7 +12,9 @@ const Login = ({ menuOpen }) => {
         display: menuOpen ? 'block' : 'none',
       }}
     >
-      <button>google login</button>
+      <form action='http://localhost:3000/auth/google' method='get'>
+        <button type='submit'>google login</button>
+      </form>
     </div>
   );
 };
